@@ -1,0 +1,15 @@
+# Test Dependencies for Work-Agent
+#
+# Install with: pip install -r requirements-test.txt
+#
+# Reference: docs/test/qa-master-plan.md - Section 7.1 (Testing Frameworks)
+
+# Core test framework
+pytest>=7.4.0,<8.0.0
+pytest-asyncio>=0.21.0,<1.0.0
+
+# Database connectivity
+psycopg2-binary>=2.9.0,<3.0.0
+
+# Optional: for enhanced output
+pytest-cov>=4.0.0,<5.0.0

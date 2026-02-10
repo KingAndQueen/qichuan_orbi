@@ -1,0 +1,220 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root{
+  --content-max-width: 840px;
+  /* Serious style tokens (light) */
+  --color-bg-layout: #f7f8fa;
+  --color-bg-container: #ffffff;
+  --color-text: #111827;
+  --color-text-secondary: #6b7280;
+  --color-border: #e5e7eb;
+  --color-fill-secondary: #f3f4f6;
+  --color-primary: #4F46E5;
+  --color-primary-bg: #eef2ff;
+  --radius: 12px;
+  /* Card spec from frontend-interaction-guidelines 1.3 (1.1) */
+  --radius-card: 4px;
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.1);
+  
+  /* Message background colors - Gemini style (gray, not blue) */
+  --user-message-bg: #f1f3f4;           /* User message: light gray (Gemini style) */
+  --user-message-text: #1f1f1f;         /* User message text: dark gray */
+  --assistant-message-bg: transparent;  /* Assistant message background (transparent) */
+  --assistant-message-hover-bg: rgba(0, 0, 0, 0.02); /* Assistant message hover (very subtle) */
+  
+  /* Interaction states - Hover (Light theme: darken one level) */
+  --color-hover-bg: #e5e7eb;           /* General hover background (降2级，更明显) */
+  --color-hover-bg-subtle: #f9fafb;    /* Subtle hover for elements with existing bg */
+  --color-hover-border: #9ca3af;       /* Hover border (darker, 深灰) */
+  --color-hover-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);  /* Button hover shadow */
+  --color-hover-shadow-inset: inset 0 1px 2px rgba(0, 0, 0, 0.05);  /* Inner shadow for pressed effect */
+  
+  /* Error state */
+  --color-error: #ef4444;
+  --color-error-bg: #fef2f2;
+  
+  /* Send button colors - theme-aware */
+  --color-send-button-enabled: #4F46E5;        /* Enabled: primary color (Indigo) */
+  --color-send-button-enabled-text: #ffffff;   /* Enabled: white text */
+  --color-send-button-disabled: #e5e7eb;       /* Disabled: light gray */
+  --color-send-button-disabled-text: #9ca3af;  /* Disabled: medium gray */
+  
+  /* Avatar background colors - theme-aware */
+  --color-user-avatar-bg: #4F46E5;             /* User avatar: primary color */
+  --color-assistant-avatar-bg: #f3f4f6;        /* Assistant avatar: light gray */
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  color: var(--color-text);
+  background: var(--color-bg-layout);
+}
+
+/* Disable UA scroll anchoring in message scroll container to avoid unintended jumps */
+.of-scroll-container {
+  overflow-anchor: none;
+}
+
+.container-centered {
+  width: 100%;
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+}
+
+/* Dark theme - ChatGPT style with better contrast */
+html[data-theme='dark'] {
+  --color-bg-layout: #343541;           /* ChatGPT dark background */
+  --color-bg-container: #202123;        /* Container background */
+  --color-text: #ececf1;                /* High contrast text */
+  --color-text-secondary: #9ca3af;
+  --color-border: #40414f;              /* Subtle borders */
+  --color-fill-secondary: #40414f;      /* Fill color */
+  --color-primary-bg: #1e1b4b;
+  
+  /* Message background colors (dark theme) - Gemini style */
+  --user-message-bg: #2e3039;           /* User message: dark gray (Gemini dark mode) */
+  --user-message-text: #e8eaed;         /* User message text: light gray */
+  --assistant-message-bg: transparent;  /* Assistant message background (transparent) */
+  --assistant-message-hover-bg: rgba(255, 255, 255, 0.05); /* Assistant message hover */
+  
+  /* Interaction states - Hover (Dark theme: lighten one level) */
+  --color-hover-bg: #40414f;            /* General hover background */
+  --color-hover-bg-subtle: #2a2b32;     /* Subtle hover */
+  --color-hover-border: #565869;        /* Hover border (lighter, 更亮) */
+  --color-hover-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);   /* Button hover shadow */
+  --color-hover-shadow-inset: inset 0 1px 2px rgba(255, 255, 255, 0.03);  /* Inner shadow (lighter for dark) */
+  
+  /* Error state */
+  --color-error: #f87171;
+  --color-error-bg: #1f1315;
+  
+  /* Send button colors (dark theme) */
+  --color-send-button-enabled: #ececf1;        /* Enabled: light/white */
+  --color-send-button-enabled-text: #202123;   /* Enabled: dark text */
+  --color-send-button-disabled: #40414f;       /* Disabled: dark gray */
+  --color-send-button-disabled-text: #6b7280;  /* Disabled: medium gray */
+  
+  /* Avatar background colors (dark theme) */
+  --color-user-avatar-bg: #6366f1;             /* User avatar: brighter Indigo */
+  --color-assistant-avatar-bg: #40414f;        /* Assistant avatar: dark gray */
+}
+
+/* Shared dropdown/menu styles */
+.of-dropdown {
+  background: var(--color-bg-container);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.18), 0 3px 6px rgba(0,0,0,0.12);
+  transition: opacity 120ms ease-out, transform 120ms ease-out;
+}
+.of-menu-item {
+  padding: 6px 12px;
+  font-size: 12px;
+  line-height: 18px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+.of-menu-item:hover {
+  background: var(--color-hover-bg);
+}
+
+/* Streaming cursor blink animation - ChatGPT style */
+@keyframes blink-caret {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.streaming-caret {
+  animation: blink-caret 1s step-end infinite;
+}
+
+@layer components {
+  .sidebar-heading {
+    @apply text-xs font-semibold uppercase tracking-wide;
+    color: var(--color-text-secondary);
+    letter-spacing: 0.08em;
+  }
+
+  .sidebar-section-label {
+    @apply text-sm font-medium;
+    color: var(--color-text-secondary);
+  }
+
+  .sidebar-text-primary {
+    color: var(--color-text);
+  }
+
+  .sidebar-text-secondary {
+    color: var(--color-text-secondary);
+  }
+
+  .sidebar-link {
+    @apply block rounded-md px-2 py-2 text-sm transition-colors;
+    color: var(--color-text);
+  }
+
+  .sidebar-link:hover {
+    background: var(--color-hover-bg);
+  }
+
+  .sidebar-icon-button {
+    @apply rounded-md p-2 transition-colors;
+    color: var(--color-text);
+  }
+
+  .sidebar-icon-button:hover {
+    background: var(--color-hover-bg);
+  }
+
+  .sidebar-icon-button-secondary {
+    color: var(--color-text-secondary);
+  }
+
+  .sidebar-surface {
+    color: var(--color-text);
+    background: var(--color-bg-container);
+    border: 1px solid var(--color-border);
+  }
+
+  .sidebar-surface:hover {
+    background: var(--color-hover-bg);
+  }
+
+  .sidebar-conversation {
+    @apply px-2 py-2 rounded-md transition-colors cursor-pointer;
+    color: var(--color-text);
+    border: 1px solid transparent;
+  }
+
+  .sidebar-conversation:hover {
+    background: var(--color-hover-bg);
+  }
+
+  .sidebar-conversation-active {
+    background: var(--color-hover-bg);
+  }
+
+  .sidebar-conversation-title {
+    @apply truncate text-sm;
+    color: var(--color-text);
+  }
+
+  .sidebar-meta {
+    @apply text-xs;
+    color: var(--color-text-secondary);
+  }
+
+  .sidebar-menu-button {
+    @apply rounded px-1 py-0.5 transition-colors;
+    color: var(--color-text-secondary);
+  }
+
+  .sidebar-menu-button:hover {
+    background: var(--color-hover-bg);
+  }
+}

@@ -1,0 +1,62 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - alert [ref=e2]
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e6]:
+        - link "返回" [ref=e7] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e8]: ←
+          - generic [ref=e9]: 返回
+        - heading "工作流市场" [level=1] [ref=e10]
+      - tablist "工作流分类" [ref=e12]:
+        - tab "客户需求驱动" [selected] [ref=e13] [cursor=pointer]: 客户需求驱动
+        - tab "内部使用驱动" [ref=e15] [cursor=pointer]
+        - tab "战略规划驱动" [ref=e16] [cursor=pointer]
+    - main [ref=e17]:
+      - tabpanel [ref=e19]:
+        - generic [ref=e21]:
+          - generic [ref=e22]: 🚨
+          - generic [ref=e23]:
+            - heading "危机公关助手" [level=3] [ref=e24]
+            - paragraph [ref=e25]: 快速响应和处理企业危机事件，帮助企业在危机中保持品牌形象和公众信任
+            - list [ref=e26]:
+              - listitem [ref=e27]:
+                - generic [ref=e28]: •
+                - generic [ref=e29]: 24小时内生成应对方案
+              - listitem [ref=e30]:
+                - generic [ref=e31]: •
+                - generic [ref=e32]: 多渠道舆情监控与分析
+              - listitem [ref=e33]:
+                - generic [ref=e34]: •
+                - generic [ref=e35]: 模板化回应策略库
+              - listitem [ref=e36]:
+                - generic [ref=e37]: •
+                - generic [ref=e38]: 实时危机等级评估
+          - generic [ref=e39]:
+            - button "免费试用 (3次)" [ref=e40] [cursor=pointer]
+            - button "订阅 ¥99/月" [ref=e41] [cursor=pointer]
+        - generic [ref=e43]:
+          - generic [ref=e44]: 💬
+          - generic [ref=e45]:
+            - heading "客户服务优化" [level=3] [ref=e46]
+            - paragraph [ref=e47]: 提升客户服务质量，自动生成客户问题解决方案和服务话术
+            - list [ref=e48]:
+              - listitem [ref=e49]:
+                - generic [ref=e50]: •
+                - generic [ref=e51]: 智能问题分类与路由
+              - listitem [ref=e52]:
+                - generic [ref=e53]: •
+                - generic [ref=e54]: 自动生成回复建议
+              - listitem [ref=e55]:
+                - generic [ref=e56]: •
+                - generic [ref=e57]: 客户满意度预测
+              - listitem [ref=e58]:
+                - generic [ref=e59]: •
+                - generic [ref=e60]: 服务质量评估报告
+          - generic [ref=e61]:
+            - button "免费试用 (3次)" [ref=e62] [cursor=pointer]
+            - button "订阅 ¥79/月" [ref=e63] [cursor=pointer]
+```

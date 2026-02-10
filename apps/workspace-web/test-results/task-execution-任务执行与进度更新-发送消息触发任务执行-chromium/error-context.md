@@ -1,0 +1,66 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e4]:
+      - button "收起左侧菜单" [ref=e6] [cursor=pointer]:
+        - img [ref=e7]
+      - generic [ref=e10]:
+        - button "发起新对话" [ref=e11] [cursor=pointer]:
+          - img [ref=e12]
+          - text: 发起新对话
+        - button "临时对话" [ref=e14] [cursor=pointer]:
+          - img [ref=e15]
+      - generic [ref=e17]: 应用
+      - navigation "应用导航" [ref=e18]:
+        - link "工作流市场" [ref=e19] [cursor=pointer]:
+          - /url: /marketplace
+          - img [ref=e20]
+          - text: 工作流市场
+        - link "数据洞察" [ref=e24] [cursor=pointer]:
+          - /url: /activity
+          - img [ref=e25]
+          - text: 数据洞察
+        - link "三方管理" [ref=e27] [cursor=pointer]:
+          - /url: /connections
+          - img [ref=e28]
+          - text: 三方管理
+      - generic [ref=e30]: 会话
+      - button "请分析以下财务数据： - Q1 营收：¥1,25… 对话项菜单：请分析以下财务数据： - Q1 营收：¥1,25…" [ref=e33] [cursor=pointer]:
+        - generic [ref=e34]:
+          - generic [ref=e35]: 请分析以下财务数据： - Q1 营收：¥1,25…
+          - button "对话项菜单：请分析以下财务数据： - Q1 营收：¥1,25…" [ref=e38]: …
+    - generic [ref=e39]:
+      - banner [ref=e40]:
+        - generic [ref=e41]: 新智流 · 工作空间
+        - generic [ref=e42]:
+          - button "切换主题" [ref=e43] [cursor=pointer]: 浅色
+          - button "用户菜单" [ref=e45] [cursor=pointer]:
+            - generic [ref=e46]: 用
+      - main [ref=e47]:
+        - generic [ref=e48]:
+          - generic [ref=e49]:
+            - alert [ref=e50]:
+              - generic [ref=e51]:
+                - generic [ref=e52]: 发送失败，请重试
+                - button "关闭" [ref=e53] [cursor=pointer]
+            - generic [ref=e55]:
+              - generic [ref=e59]: 请分析以下财务数据： - Q1 营收：¥1,250,000 - Q2 营收：¥1,480,000 - Q3 营收：¥1,320,000 - Q4 营收：¥1,890,000 请生成季度对比分析报告。
+              - generic "任务进度区域" [ref=e62]:
+                - generic "任务进度" [ref=e63]:
+                  - button "展开任务详情" [ref=e64] [cursor=pointer]:
+                    - generic [ref=e65]:
+                      - generic [ref=e66]: 📋
+                      - generic [ref=e67]: 正在处理...
+                    - generic [ref=e68]: ▼
+          - generic [ref=e71]:
+            - textbox "输入消息..." [ref=e72]: 请分析以下财务数据： - Q1 营收：¥1,250,000 - Q2 营收：¥1,480,000 - Q3 营收：¥1,320,000 - Q4 营收：¥1,890,000 请生成季度对比分析报告。
+            - generic [ref=e73]:
+              - button "上传文件" [ref=e74] [cursor=pointer]: +
+              - button "选择工作流" [ref=e76] [cursor=pointer]:
+                - generic [ref=e77]: 选择工作流
+                - generic [ref=e78]: ▼
+              - button "发送消息" [ref=e79] [cursor=pointer]: ↑
+  - alert [ref=e80]
+```

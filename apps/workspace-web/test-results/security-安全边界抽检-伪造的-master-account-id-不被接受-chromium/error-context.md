@@ -1,0 +1,47 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e4]:
+      - button "收起左侧菜单" [ref=e6] [cursor=pointer]:
+        - img [ref=e7]
+      - generic [ref=e10]:
+        - button "发起新对话" [ref=e11] [cursor=pointer]:
+          - img [ref=e12]
+          - text: 发起新对话
+        - button "临时对话" [ref=e14] [cursor=pointer]:
+          - img [ref=e15]
+      - generic [ref=e17]: 应用
+      - navigation "应用导航" [ref=e18]:
+        - link "工作流市场" [ref=e19] [cursor=pointer]:
+          - /url: /marketplace
+          - img [ref=e20]
+          - text: 工作流市场
+        - link "数据洞察" [ref=e24] [cursor=pointer]:
+          - /url: /activity
+          - img [ref=e25]
+          - text: 数据洞察
+        - link "三方管理" [ref=e27] [cursor=pointer]:
+          - /url: /connections
+          - img [ref=e28]
+          - text: 三方管理
+      - generic [ref=e30]: 会话
+    - generic [ref=e32]:
+      - banner [ref=e33]:
+        - generic [ref=e34]: 新智流 · 工作空间
+        - generic [ref=e35]:
+          - button "切换主题" [ref=e36] [cursor=pointer]: 浅色
+          - button "用户菜单" [ref=e38] [cursor=pointer]:
+            - generic [ref=e39]: 用
+      - main [ref=e40]:
+        - generic [ref=e43]:
+          - textbox "输入消息..." [ref=e44]
+          - generic [ref=e45]:
+            - button "上传文件" [ref=e46] [cursor=pointer]: +
+            - button "选择工作流" [ref=e48] [cursor=pointer]:
+              - generic [ref=e49]: 选择工作流
+              - generic [ref=e50]: ▼
+            - button "发送消息" [disabled] [ref=e51]: ↑
+  - alert [ref=e52]
+```

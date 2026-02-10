@@ -1,0 +1,40 @@
+# ======================================================
+# 🚀 Pre-push guard: smart lint + typecheck + build
+# ------------------------------------------------------
+# 推送前守卫：智能执行 lint / typecheck / build
+# 1️⃣ 自动识别当前分支
+# 2️⃣ 自动检测远端分支是否存在
+# 3️⃣ 若无改动或 Turbo 无任务，则自动跳过
+# ======================================================
+
+# 获取当前分支名
+BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
+echo "🌀 当前分支: $BRANCH_NAME"
+
+# 检查远端分支是否存在
+if ! git show-ref --verify --quiet "refs/remotes/origin/$BRANCH_NAME"; then
+  echo "⚠️  未检测到远端分支 origin/$BRANCH_NAME，跳过检查（可能是第一次推送）。"
+  exit 0
+fi
+
+# 检查当前分支相对远端是否有改动
+CHANGED=$(git diff --name-only origin/$BRANCH_NAME)
+if [ -z "$CHANGED" ]; then
+  echo "✅ 当前分支相对 origin/$BRANCH_NAME 无代码改动，跳过检查。"
+  exit 0
+fi
+
+# 执行 Turbo 命令，仅针对受影响范围
+echo "🚧 检测到改动，执行 Turbo 检查中..."
+pnpm dlx turbo run lint typecheck build --filter="...[origin/$BRANCH_NAME]"
+
+# 检查 Turbo 命令的退出码
+if [ $? -eq 0 ]; then
+  echo "✅ Turbo 检查通过！"
+  exit 0
+else
+  echo "❌ Turbo 检查失败（lint / typecheck / build 可能有错误）。"
+  echo "  👉 你可以手动运行以下命令查看详情："
+  echo "     pnpm dlx turbo run lint typecheck build --filter=\"...[origin/$BRANCH_NAME]\""
+  exit 1
+fi

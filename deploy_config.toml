@@ -1,0 +1,158 @@
+[project_paths]
+# 项目根目录的绝对路径 (如果 deploy.py 在根目录，保持 .)
+repo_path = "."
+# 前端 Next.js 应用的目录
+frontend_app_dir = "apps/workspace-web"
+# 后端 Go 服务的目录
+backend_service_dir = "services/site-auth"
+# Go 服务构建后二进制文件的输出路径
+backend_bin_path = "services/site-auth/bin/site-auth"
+# Python Agent Bridge 服务目录
+python_service_dir = "services/agent-bridge"
+# Python Agent Bridge 虚拟环境目录
+python_venv_path = "services/agent-bridge/.venv"
+# 日志和 PID 文件的存放目录
+run_dir = "./run"
+
+[logging]
+# 统一日志目录（相对于项目根目录）
+log_dir = "./logs"
+# 应用服务日志目录
+app_log_dir = "./logs/app"
+# Nginx 日志目录
+nginx_log_dir = "./logs/nginx"
+# 部署脚本日志目录（可选）
+deploy_log_dir = "./logs/deploy"
+# 日志保留天数
+retention_days = 30
+# 是否启用日志轮转
+enable_rotation = true
+# 单个日志文件最大大小（MB），超过此大小将轮转
+max_log_size_mb = 100
+
+[database]
+# 数据库主机。
+# 两种模式下，应用都将访问 'localhost'。
+host = "localhost"
+port = 5432
+user = "postgres"
+password = "postgres"
+db_name = "orbitaskflow"
+
+[redis]
+# Redis 主机。
+# 两种模式下，应用都将访问 'localhost'。
+host = "localhost"
+port = 6379
+# 如果没有密码，请留空
+password = ""
+
+[backend_go]
+# Go 服务监听的地址和端口
+listen_addr = ":8080"
+# 允许前端访问的 CORS 源地址（通过 Nginx 网关访问）
+allowed_origins = "http://localhost:9080"
+session_ttl = "24h"
+bcrypt_cost = "12"
+ratelimit_window = "15m"
+ratelimit_count = "10"
+# (新增) Go 模块代理，用于解决 GFW 导致的网络超时
+go_proxy = "https://goproxy.cn,direct"
+# (新增) Go 服务的日志等级 (debug/info/warn/error)
+go_log_level = "info"
+
+[frontend_next]
+# Next.js 生产环境服务监听的端口
+listen_port = 5174
+# Next.js 服务运行的主机名
+listen_host = "0.0.0.0"
+# App 运行环境
+app_env = "production"
+
+[python_agent]
+# 创建虚拟环境时使用的 Python 解释器
+python_bin = "python3"
+# Agent Bridge 服务监听的主机和端口
+listen_host = "0.0.0.0"
+listen_port = 8050
+# 日志级别（会作为环境变量传入，可按需覆盖）
+log_level = "info"
+default_workflow_slug = "system-default"
+default_provider = "system_native"
+default_workflow_name = "System Default Agent"
+default_workflow_description = "Built-in Orbit system helper powered by unified prompt configuration."
+system_prompt = "你好！我是 Orbit 系统助手。目前系统运行正常。我可以帮你：\n1. 介绍工作流\n2. 查询账户状态"
+system_icon = "https://assets.orbitaskflow.com/icons/system-avatar.png"
+system_color = "#3B82F6"
+
+[coze]
+# Coze Open API 的访问凭证（请在部署前填写）
+api_key = ""
+# 默认 Bot ID，用户任务可覆盖
+bot_id = "7559780859004960831"
+# (已修改) 覆盖默认的 API 基础地址 (V3 完整路径)
+base_url = "https://api.coze.cn/v3/chat"
+
+[executables]
+# migrate CLI 工具的路径 (如果在 PATH 中，保留 'migrate')
+# 从 https://github.com/golang-migrate/migrate/releases 下载
+migrate_cli_path = "migrate"
+
+[linux_packages]
+# (仅 Linux 脚本使用)
+# 用于 apt install 的包名
+postgres_pkg = "postgresql"
+postgres_client_pkg = "postgresql-client"
+redis_pkg = "redis-server"
+postgres_service_name = "postgresql"
+redis_service_name = "redis-server"
+
+[macos_packages]
+# (仅 macOS 脚本使用)
+# 用于 brew install 的包名
+postgres_formula = "postgresql@16"
+redis_formula = "redis"
+
+[nginx]
+# Nginx 网关配置
+# Environment: development or production
+# 环境：development 或 production
+environment = "development"
+# JWT 密钥路径（RS256 格式，PEM 文件）
+# JWT Private Key Path (RS256 format, PEM file)
+# 注意：请使用绝对路径，示例路径需要根据实际部署环境修改
+# Note: Please use absolute path, example path needs to be modified according to actual deployment environment
+jwt_private_key_path = "/workspace/keys/jwt_private.pem"
+# JWT Public Key Path (RS256 format, PEM file)
+# 注意：JWT 公钥用于 site-auth 服务的 JWT 验证端点
+# Note: JWT public key is used by site-auth service for JWT validation endpoint
+jwt_public_key_path = "/workspace/keys/jwt_public.pem"
+# Internal Token for service-to-service communication (32 bytes, 256 bits)
+# 内部服务通信 Token（32 字节，256 位）
+# 注意：此 token 已自动生成，请妥善保管，不要泄露
+# Note: This token has been auto-generated, please keep it secure and do not expose it
+agent_bridge_internal_token = "8557b0aa32b0427b353853aecfc70077aa4361806e6bc91bfd607b679c7ace9c"
+# Nginx 监听端口（容器内部端口，映射到主机的 80/443）
+# Nginx listen port (internal container port, mapped to host 80/443)
+listen_port = 9080
+# Nginx HTTPS 端口（容器内部端口，映射到主机的 443）
+# Nginx HTTPS port (internal container port, mapped to host 443)
+https_port = 9443
+# Nginx 配置目录（Linux）
+# Nginx configuration directory (Linux)
+config_dir_linux = "/etc/nginx/sites-available/orbitaskflow"
+# Nginx 配置启用目录（Linux，符号链接）
+# Nginx configuration enabled directory (Linux, symlink)
+config_enabled_linux = "/etc/nginx/sites-enabled/orbitaskflow"
+# Nginx 配置目录（macOS）
+# Nginx configuration directory (macOS)
+config_dir_macos = "/usr/local/etc/nginx/servers/orbitaskflow.conf"
+# Nginx 服务名称（systemd/launchd）
+# Nginx service name (systemd/launchd)
+service_name = "nginx"
+# Nginx 网关对外访问地址（用于前端环境变量）
+# Nginx gateway public URL (for frontend environment variables)
+public_base_url = "http://localhost:9080"
+# Nginx WebSocket 对外访问地址（用于前端环境变量）
+# Nginx WebSocket public URL (for frontend environment variables)
+public_ws_url = "ws://localhost:9080/ws/agent"

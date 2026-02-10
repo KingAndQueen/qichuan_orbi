@@ -1,0 +1,3 @@
+ALTER TABLE site_accounts
+  DROP COLUMN IF EXISTS phone,
+  DROP COLUMN IF EXISTS email;

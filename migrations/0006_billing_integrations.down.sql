@@ -1,0 +1,9 @@
+DROP INDEX IF EXISTS idx_ks_conn_id;
+DROP INDEX IF EXISTS idx_ks_user_id;
+DROP TABLE IF EXISTS knowledge_sources;
+DROP INDEX IF EXISTS idx_uc_user_id;
+DROP TABLE IF EXISTS user_connections;
+DROP INDEX IF EXISTS idx_bills_user_id;
+DROP INDEX IF EXISTS idx_bills_status;
+DROP TABLE IF EXISTS bills;
+DROP TABLE IF EXISTS subscriptions;
