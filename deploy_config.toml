@@ -122,16 +122,16 @@ environment = "development"
 # JWT Private Key Path (RS256 format, PEM file)
 # 注意：请使用绝对路径，示例路径需要根据实际部署环境修改
 # Note: Please use absolute path, example path needs to be modified according to actual deployment environment
-jwt_private_key_path = "/workspace/keys/jwt_private.pem"
+jwt_private_key_path = "/Users/young/Qichuan/Work-Agent/keys/jwt_private.pem"
 # JWT Public Key Path (RS256 format, PEM file)
 # 注意：JWT 公钥用于 site-auth 服务的 JWT 验证端点
 # Note: JWT public key is used by site-auth service for JWT validation endpoint
-jwt_public_key_path = "/workspace/keys/jwt_public.pem"
+jwt_public_key_path = "/Users/young/Qichuan/Work-Agent/keys/jwt_public.pem"
 # Internal Token for service-to-service communication (32 bytes, 256 bits)
 # 内部服务通信 Token（32 字节，256 位）
 # 注意：此 token 已自动生成，请妥善保管，不要泄露
 # Note: This token has been auto-generated, please keep it secure and do not expose it
-agent_bridge_internal_token = "8557b0aa32b0427b353853aecfc70077aa4361806e6bc91bfd607b679c7ace9c"
+agent_bridge_internal_token = "e7ae968f09435c094963df44e82511a162113652c78797b26bd87d1d96929356"
 # Nginx 监听端口（容器内部端口，映射到主机的 80/443）
 # Nginx listen port (internal container port, mapped to host 80/443)
 listen_port = 9080

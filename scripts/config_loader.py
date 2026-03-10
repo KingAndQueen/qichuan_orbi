@@ -13,10 +13,17 @@ from typing import Any, Dict, Iterable
 
 def _import_toml_module():
     """Lazy import tomllib or tomli for TOML parsing./按需导入 tomllib 或 tomli 以解析 TOML。"""
+    try:
+        import tomllib
+        return tomllib
+    except ImportError:
+        pass
+    try:
+        import tomli
+        return tomli
+    except ImportError:
+        pass
 
-    for module_name in ("tomllib", "tomli"):
-        if importlib.util.find_spec(module_name):
-            return importlib.import_module(module_name)
     raise ModuleNotFoundError(
         "未找到 TOML 解析器。请使用 Python 3.11+ (内置 tomllib) 或先安装 tomli。"
     )

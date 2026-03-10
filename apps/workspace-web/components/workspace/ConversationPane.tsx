@@ -45,10 +45,12 @@ export const ConversationPane: React.FC<ConversationPaneProps> = ({
         )}
       </div>
       <div
-        className="sticky bottom-0 z-10 py-3 bg-[var(--color-bg-container)] border-t border-[var(--color-border)]"
-        style={{ background: 'var(--color-bg-container)' }}
+        className="sticky bottom-0 z-10 pt-10 pb-6 px-4 md:px-6 flex justify-center items-end"
+        style={{ background: 'linear-gradient(to top, var(--color-bg-container) 65%, transparent 100%)' }}
       >
-        {composer}
+        <div className="w-full max-w-[840px]">
+          {composer}
+        </div>
       </div>
     </div>
   )

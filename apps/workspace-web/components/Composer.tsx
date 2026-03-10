@@ -120,19 +120,18 @@ export const Composer = forwardRef<ComposerHandle, {
     return name.slice(0, 10) + '...'
   }
 
-  const workflowButtonText = selectedWorkflow 
+  const workflowButtonText = selectedWorkflow
     ? truncateWorkflowName(selectedWorkflow.name)
     : '选择工作流'
 
   return (
-    <div 
-      className="rounded-lg border p-4"
-      style={{ 
-        borderColor: 'var(--color-border)', 
+    <div
+      className="rounded-3xl p-4 md:px-5 md:py-4 transition-shadow relative shadow-sm"
+      style={{
         background: 'var(--color-bg-container)',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+        boxShadow: '0 0 0 1px var(--color-border), 0 8px 30px rgba(0,0,0,0.06)'
       }}
-      onDragOver={(e) => e.preventDefault()} 
+      onDragOver={(e) => e.preventDefault()}
       onDrop={onDrop}
     >
       {/* 1. File preview area (top, when files present)./顶部文件预览区域（存在文件时显示）。 */}
@@ -165,13 +164,13 @@ export const Composer = forwardRef<ComposerHandle, {
                     </div>
                   </div>
                   <div className="absolute top-1 right-1 flex gap-1">
-                    <button 
-                      type="button" 
-                      aria-label="删除文件" 
-                      className="text-xs rounded-md px-1 transition-all" 
-                      style={{ 
+                    <button
+                      type="button"
+                      aria-label="删除文件"
+                      className="text-xs rounded-md px-1 transition-all"
+                      style={{
                         border: 'none',
-                        background: 'transparent', 
+                        background: 'transparent',
                         cursor: 'pointer',
                         color: 'var(--color-text)'
                       }}
@@ -212,8 +211,8 @@ export const Composer = forwardRef<ComposerHandle, {
             inputRef.current?.focus()
           }
         }}
-        className="w-full min-h-[80px] max-h-[120px] rounded-md p-3 resize-none mb-3"
-        style={{ 
+        className="w-full min-h-[80px] max-h-[120px] rounded-md p-3 resize-none mb-3 text-base"
+        style={{
           border: 'none',
           outline: 'none',
           background: 'transparent',
@@ -228,11 +227,11 @@ export const Composer = forwardRef<ComposerHandle, {
           type="button"
           aria-label="上传文件"
           className="flex-shrink-0 rounded-md w-9 h-9 flex items-center justify-center transition-all"
-          style={{ 
+          style={{
             background: 'transparent',
             border: 'none',
-            color: 'var(--color-text)', 
-            cursor: 'pointer' 
+            color: 'var(--color-text)',
+            cursor: 'pointer'
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.background = 'var(--color-hover-bg)'
@@ -258,7 +257,7 @@ export const Composer = forwardRef<ComposerHandle, {
             aria-label="选择工作流"
             aria-expanded={workflowMenuOpen}
             className="rounded-md px-3 h-9 flex items-center gap-1 transition-all text-sm whitespace-nowrap"
-            style={{ 
+            style={{
               border: 'none',
               background: selectedWorkflow ? 'var(--color-primary-bg)' : 'transparent',
               color: selectedWorkflow ? 'var(--color-primary)' : 'var(--color-text)',
@@ -290,7 +289,7 @@ export const Composer = forwardRef<ComposerHandle, {
               role="menu"
               aria-label="工作流列表"
               className="absolute bottom-full left-0 mb-1 z-20 rounded-lg border shadow-lg overflow-hidden"
-              style={{ 
+              style={{
                 minWidth: 160,
                 maxHeight: 240,
                 background: 'var(--color-bg-container)',
@@ -304,9 +303,9 @@ export const Composer = forwardRef<ComposerHandle, {
                   role="menuitem"
                   type="button"
                   className="block text-left w-full px-3 py-2 text-sm transition-all"
-                  style={{ 
-                    color: 'var(--color-text)', 
-                    cursor: 'pointer', 
+                  style={{
+                    color: 'var(--color-text)',
+                    cursor: 'pointer',
                     background: 'transparent',
                     border: 'none'
                   }}
@@ -339,9 +338,9 @@ export const Composer = forwardRef<ComposerHandle, {
                     role="menuitem"
                     type="button"
                     className="block text-left w-full px-3 py-2 text-sm transition-all"
-                    style={{ 
-                      color: 'var(--color-text)', 
-                      cursor: 'pointer', 
+                    style={{
+                      color: 'var(--color-text)',
+                      cursor: 'pointer',
                       background: 'transparent',
                       border: 'none'
                     }}
@@ -377,18 +376,18 @@ export const Composer = forwardRef<ComposerHandle, {
             type="button"
             aria-label="发送消息"
             disabled={(!value.trim() && files.length === 0) || disabled || uploadsInProgress > 0}
-            onClick={() => { 
+            onClick={() => {
               if ((!value.trim() && files.length === 0) || disabled || uploadsInProgress > 0) return
               onSend()
               inputRef.current?.focus()
             }}
             className="flex-shrink-0 rounded-full w-9 h-9 flex items-center justify-center font-bold text-lg transition-all"
-            style={{ 
-              background: (!value.trim() && files.length === 0) || disabled || uploadsInProgress > 0 
-                ? 'var(--color-send-button-disabled)' 
-                : 'var(--color-send-button-enabled)', 
-              color: (!value.trim() && files.length === 0) || disabled || uploadsInProgress > 0 
-                ? 'var(--color-send-button-disabled-text)' 
+            style={{
+              background: (!value.trim() && files.length === 0) || disabled || uploadsInProgress > 0
+                ? 'var(--color-send-button-disabled)'
+                : 'var(--color-send-button-enabled)',
+              color: (!value.trim() && files.length === 0) || disabled || uploadsInProgress > 0
+                ? 'var(--color-send-button-disabled-text)'
                 : 'var(--color-send-button-enabled-text)',
               cursor: (!value.trim() && files.length === 0) || disabled || uploadsInProgress > 0 ? 'not-allowed' : 'pointer',
               border: 'none'
@@ -410,7 +409,7 @@ export const Composer = forwardRef<ComposerHandle, {
             type="button"
             aria-label="停止生成"
             className="flex-shrink-0 rounded-full w-9 h-9 flex items-center justify-center text-lg transition-all"
-            style={{ 
+            style={{
               background: 'var(--color-send-button-enabled)',
               color: 'var(--color-send-button-enabled-text)',
               cursor: 'pointer',

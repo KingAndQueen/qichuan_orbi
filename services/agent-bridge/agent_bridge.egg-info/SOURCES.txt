@@ -4,6 +4,7 @@ agent_bridge/__init__.py
 agent_bridge/app.py
 agent_bridge/client.py
 agent_bridge/config.py
+agent_bridge/dependencies.py
 agent_bridge/logging.py
 agent_bridge/models.py
 agent_bridge/router.py
@@ -12,10 +13,15 @@ agent_bridge.egg-info/SOURCES.txt
 agent_bridge.egg-info/dependency_links.txt
 agent_bridge.egg-info/requires.txt
 agent_bridge.egg-info/top_level.txt
-agent_bridge/core/__init__.py
-agent_bridge/core/factory.py
 agent_bridge/providers/__init__.py
 agent_bridge/providers/base.py
 agent_bridge/providers/coze.py
 agent_bridge/providers/system.py
-tests/test_architecture_refactor.py
+agent_bridge/utils/__init__.py
+agent_bridge/utils/db.py
+tests/test_account_isolation.py
+tests/test_auth.py
+tests/test_exception_paths.py
+tests/test_providers.py
+tests/test_routes.py
+tests/test_stream_handling.py

@@ -466,12 +466,20 @@ def install_dependencies(scope: Optional[str] = None):
             
             # *** FIX: 使用 .venv ***
             venv_path = os.path.join(py_root, '.venv')
+            
+            # 强制检查：如果我们是在旧版的 python3.9 生成的环境中，把它删了重新生成，否则包依赖全乱了
+            if os.path.exists(venv_path) and os.path.exists(os.path.join(venv_path, 'lib', 'python3.9')):
+                print('[WARN] 检测到旧版的 Python 3.9 venv，正在清理并使用您的新版 Python 重新创建...')
+                shutil.rmtree(venv_path)
+
             if not os.path.exists(venv_path):
                 print('[INFO] Creating Python virtual environment at .venv ...')
                 run(['python3', '-m', 'venv', '.venv'], cwd=py_root)
             
             # *** FIX: 使用 .venv/bin/pip ***
             pip_executable = os.path.join(venv_path, 'bin', 'pip')
+            # 升级 pip 以避免较旧的 pip (比如 Python 3.9 自带的 21.x) 无法识别 pyproject.toml 导致 Editable Mode 报错
+            run([pip_executable, 'install', '--upgrade', 'pip'], cwd=py_root)
             run([pip_executable, 'install', '-e', '.'], cwd=py_root)
             # 安装 dev 依赖 (psycopg2, redis)
             run([pip_executable, 'install', 'psycopg2-binary', 'redis'], cwd=py_root)
@@ -542,16 +550,18 @@ def _get_migrate_cmd() -> Optional[List[str]]:
         if not cmd:
             return None # Should not happen if docker_available() is true
         
+        db_url = env_or_default("SITE_AUTH_DATABASE_URL", "postgresql://postgres:postgres@postgres:5432/orbitaskflow?sslmode=disable")
+        # Ensure we connect to the isolated docker service "postgres" rather than external localhost/db
+        db_url = db_url.replace("@localhost:", "@postgres:").replace("@127.0.0.1:", "@postgres:").replace("@db:", "@postgres:")
+        
         # Mount /migrations, set PG URL, run
         return cmd + [
             'run', '--rm',
             '-v', f'{REPO_ROOT}/migrations:/migrations',
-            '-e', f'SITE_AUTH_DATABASE_URL={env_or_default("SITE_AUTH_DATABASE_URL", "postgresql://postgres:mysecretpassword@db:5432/orbitaskflow_dev?sslmode=disable")}',
-          #  '-e', f'DATABASE_URL={env_or_default("SITE_AUTH_DATABASE_URL", "postgresql://postgres:mysecretpassword@db:5432/orbitaskflow_dev?sslmode=disable")}',
-          # 'migrate'
             '--entrypoint', 'migrate',
-            'db'
-           # 'postgres' # service name
+            'migrate',
+            '-database', db_url,
+            '-path', '/migrations'
         ]
         
     # 2. Local

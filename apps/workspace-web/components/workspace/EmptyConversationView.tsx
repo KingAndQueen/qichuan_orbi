@@ -21,9 +21,9 @@ export const EmptyConversationView: React.FC<EmptyConversationViewProps> = ({
   children,
 }) => {
   return (
-    <div className="h-full flex items-center justify-center px-4">
-      <div className="w-full max-w-3xl">
-        <ErrorBanner message={errorMsg} onDismiss={onClearError} />
+    <div className="h-full flex flex-col items-center justify-center px-4 md:px-6">
+      <div className="w-full max-w-[840px]">
+        <ErrorBanner message={errorMsg} onDismiss={onClearError} className="mb-4" />
         {children}
       </div>
     </div>

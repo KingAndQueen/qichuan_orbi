@@ -1,0 +1,11 @@
+
+# Added by agent
+postgres-data/
+.venv/
+.next/
+logs/
+run/
+__pycache__/
+*.swp
+.env
+.env.local

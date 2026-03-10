@@ -3,7 +3,7 @@
 set -euo pipefail
 
 # Sync environment variables to .env files
-python3 scripts/sync_envs.py
+services/agent-bridge/.venv/bin/python3 scripts/sync_envs.py
 
 # Optional: Initialize Local DB
 if [ "${INIT_DB:-false}" = "true" ]; then
@@ -14,4 +14,4 @@ fi
 echo "🤖 Starting Agent Bridge..."
 # uvicorn needs --env-file if it doesn't auto-load, but standard python-dotenv might be used in app.
 # User instruction explicitly says: "--env-file .env"
-cd services/agent-bridge && poetry run uvicorn agent_bridge.app:app --reload --env-file .env
+cd services/agent-bridge && .venv/bin/python3 -m uvicorn agent_bridge.app:app --reload --env-file .env

@@ -64,15 +64,23 @@ export default function Page() {
 
   return (
     <div
-      className="h-screen grid overflow-hidden"
+      className="h-screen flex flex-row overflow-hidden"
       style={{
-        gridTemplateColumns: `${leftCollapsed ? '56px' : '260px'} 1fr`,
-        background: 'var(--color-bg-layout)'
+        backgroundColor: 'var(--color-bg-layout)',
+        backgroundImage: 'var(--custom-bg-image)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
       }}
     >
+      {/* Sidebar Section */}
       <div
-        className="h-full overflow-hidden transition-all"
-        style={{ background: 'var(--color-bg-layout)' }}
+        className="h-full flex-shrink-0 overflow-hidden transition-all duration-300 relative z-20"
+        style={{
+          width: leftCollapsed ? '56px' : '260px',
+          background: 'var(--color-bg-layout)',
+          borderRight: '1px solid var(--color-border)'
+        }}
       >
         <Sidebar
           collapsed={leftCollapsed}
@@ -80,24 +88,30 @@ export default function Page() {
         />
       </div>
 
+      {/* Main Content Area */}
       <div
-        className="h-full grid grid-rows-[56px_1fr] overflow-hidden"
-        style={{ background: 'var(--color-bg-container)' }}
+        className="flex-1 h-full flex flex-col overflow-hidden relative"
+        style={{ background: 'transparent' }}
       >
+        {/* Background Image Overlay to ensure readability */}
+        <div className="absolute inset-0 pointer-events-none bg-black/40 z-0"></div>
+        <div className="absolute inset-0 pointer-events-none backdrop-blur-[2px] z-0"></div>
 
-        <WorkspaceHeader
-          theme={theme}
-          onToggleTheme={handleToggleTheme}
-          isAuthenticated={isAuthenticated}
-          user={user}
-          authStatus={status}
-          onLogin={handleLogin}
-          onLogout={handleLogout}
-        />
+        <div className="relative z-10 w-full flex-shrink-0" style={{ background: 'rgba(32, 33, 35, 0.4)', backdropFilter: 'blur(8px)' }}>
+          <WorkspaceHeader
+            theme={theme}
+            onToggleTheme={handleToggleTheme}
+            isAuthenticated={isAuthenticated}
+            user={user}
+            authStatus={status}
+            onLogin={handleLogin}
+            onLogout={handleLogout}
+          />
+        </div>
 
         <main
-          className="relative h-full overflow-hidden bg-[var(--color-bg-container)]"
-          style={{ background: 'var(--color-bg-container)' }}
+          className="relative flex-1 w-full overflow-hidden z-10"
+          style={{ background: 'transparent' }}
         >
           {messages.length === 0 ? (
             <EmptyConversationView errorMsg={errorMsg} onClearError={handleClearError}>

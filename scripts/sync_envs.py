@@ -31,25 +31,9 @@ def main():
     try:
         config = load_deploy_config(str(config_path))
     except (ModuleNotFoundError, ImportError) as e:
-        # Check if we are already in the venv to avoid infinite loop (though checking sys.executable might be safer)
-        # But specifically check if it's the TOML error
-        if "tomllib" in str(e) or "tomli" in str(e) or "TOML" in str(e):
-            venv_python = root_dir / "services/agent-bridge/.venv/bin/python3"
-            if venv_python.exists() and os.access(venv_python, os.X_OK):
-                # Check if we are already running with this python to avoid loop (unlikely if loop check is simple)
-                if Path(sys.executable).resolve() == venv_python.resolve():
-                    print(f"❌ Python in {venv_python} also missing TOML support? {e}")
-                    sys.exit(1)
-                
-                print(f"⚠️  Current Python missing TOML support. Switching to {venv_python.relative_to(root_dir)}...")
-                os.execv(str(venv_python), [str(venv_python)] + sys.argv)
-            else:
-                print(f"❌ Failed to load config: {e}")
-                print("Suggestion: Install 'tomli' (pip install toli) or use Python 3.11+")
-                sys.exit(1)
-        else:
-            print(f"❌ Failed to load config: {e}")
-            sys.exit(1)
+        print(f"❌ Failed to load config: {e}")
+        print("Suggestion: Install 'tomli' (pip install tomli) or use Python 3.11+")
+        sys.exit(1)
     except Exception as e:
         print(f"❌ Is the config valid? Error: {e}")
         sys.exit(1)

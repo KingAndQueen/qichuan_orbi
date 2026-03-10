@@ -3,7 +3,7 @@
 set -euo pipefail
 
 # Sync environment variables to .env files
-python3 scripts/sync_envs.py
+services/agent-bridge/.venv/bin/python3 scripts/sync_envs.py
 
 # Optional: Initialize Local DB
 if [ "${INIT_DB:-false}" = "true" ]; then
