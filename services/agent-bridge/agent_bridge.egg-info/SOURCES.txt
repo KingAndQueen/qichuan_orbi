@@ -8,6 +8,7 @@ agent_bridge/dependencies.py
 agent_bridge/logging.py
 agent_bridge/models.py
 agent_bridge/router.py
+agent_bridge/worker.py
 agent_bridge.egg-info/PKG-INFO
 agent_bridge.egg-info/SOURCES.txt
 agent_bridge.egg-info/dependency_links.txt

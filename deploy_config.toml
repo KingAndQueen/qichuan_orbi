@@ -87,9 +87,9 @@ system_color = "#3B82F6"
 
 [coze]
 # Coze Open API 的访问凭证（请在部署前填写）
-api_key = ""
+api_key = "pat_vc8SkVXZGpWxV7Ps4V5KDyiKf9Khf7vlA0AucgZpvjgVtCcZSJoPB5K4knu6QBNe"
 # 默认 Bot ID，用户任务可覆盖
-bot_id = "7559780859004960831"
+bot_id = "7579225349658787890"
 # (已修改) 覆盖默认的 API 基础地址 (V3 完整路径)
 base_url = "https://api.coze.cn/v3/chat"
 

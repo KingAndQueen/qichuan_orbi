@@ -1,39 +1,15 @@
 // apps/workspace-web/lib/services/agent-client.ts
 import { GatewayEnvelope } from '../types/conversation'
 
-// 单例模式管理连接
-let socket: WebSocket | null = null
-let connectPromise: Promise<void> | null = null
 const listeners = new Set<(event: GatewayEnvelope) => void>()
 let logger: ((msg: string) => void) | null = null
 
 function log(msg: string) {
   if (logger) logger(msg)
-  // 开发环境保留 console，生产环境可由 logger 接管
   if (process.env.NODE_ENV === 'development') console.log(`[AgentClient] ${msg}`)
 }
 
-// 动态获取 WS 地址 (Rule: Runtime Discovery)
-function getWsUrl(): string {
-  if (typeof window === 'undefined') return ''
-  const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
-  return `${protocol}//${window.location.host}/ws/agent`
-}
-
-// 获取 Ticket (Rule: Relative Path)
-async function fetchTicket(signal?: AbortSignal): Promise<string> {
-  const res = await fetch('/api/agent/ws-ticket', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    signal
-  })
-  if (!res.ok) throw new Error(`Ticket failed: ${res.status}`)
-  const data = await res.json()
-  return data.ticket
-}
-
 export const AgentClient = {
-  // 注入外部日志记录器 (用于 Store debugLogs)
   setLogger(fn: (msg: string) => void) {
     logger = fn
   },
@@ -44,69 +20,96 @@ export const AgentClient = {
   },
 
   async connect(signal?: AbortSignal): Promise<void> {
-    if (socket?.readyState === WebSocket.OPEN) return
-    if (connectPromise) return connectPromise
-
-    connectPromise = (async () => {
-      try {
-        log('Fetching ticket...')
-        const ticket = await fetchTicket(signal)
-        const url = `${getWsUrl()}?ticket=${ticket}`
-        
-        log(`Connecting to ${url}`)
-        
-        await new Promise<void>((resolve, reject) => {
-          const ws = new WebSocket(url)
-          
-          ws.onopen = () => {
-            socket = ws
-            log('✅ Connected')
-            resolve()
-          }
-          
-          ws.onmessage = (e) => {
-            try {
-              const payload = JSON.parse(e.data)
-              listeners.forEach(cb => cb(payload))
-            } catch (err) {
-              log(`❌ Parse error: ${err}`)
-            }
-          }
-          
-          ws.onerror = () => {
-             log('❌ WS Error')
-             if (!socket) reject(new Error('Connection failed'))
-          }
-          
-          ws.onclose = (e) => {
-            log(`🔌 Closed: ${e.code}`)
-            socket = null
-            connectPromise = null
-          }
-        })
-      } catch (e) {
-        socket = null
-        connectPromise = null
-        throw e
-      }
-    })()
-    
-    return connectPromise
+    // HTTP is stateless, no long-lived connection needed before sending
+    return Promise.resolve()
   },
 
   async send(envelope: GatewayEnvelope, signal?: AbortSignal) {
-    await this.connect(signal)
-    if (!socket || socket.readyState !== WebSocket.OPEN) {
-      throw new Error('Socket not ready')
+    log(`📤 Sending HTTP stream request (event: ${envelope.event})`)
+    
+    // We only proxy user messages to the agent stream
+    if (envelope.event !== 'user_message') {
+       log(`Skipped non-chat event: ${envelope.event}`)
+       return
     }
-    log(`📤 Sending ${envelope.event}`)
-    socket.send(JSON.stringify(envelope))
+
+    const { conversationId, payload } = envelope
+    
+    // Map Frontend payload to Backend AgentRunRequest
+    const reqBody = {
+      conversation_id: conversationId,
+      bot_id: null,
+      workflow_id: (payload as any).workflowId || "11111111-2222-3333-4444-555555555555", // default to custom Coze Bot if not provided
+      messages: [{ role: 'user', content: payload.text }]
+    }
+
+    try {
+      const response = await fetch('/api/agent/stream', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(reqBody),
+        signal
+      })
+
+      if (!response.ok) {
+        throw new Error(`Stream request failed with status: ${response.status}`)
+      }
+
+      const reader = response.body?.getReader()
+      if (!reader) throw new Error('No readable stream returned')
+
+      const decoder = new TextDecoder()
+      let buffer = ''
+
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+
+        buffer += decoder.decode(value, { stream: true })
+        const lines = buffer.split('\n')
+        
+        // Keep the last incomplete line in the buffer
+        buffer = lines.pop() || ''
+
+        let currentEvent = 'message'
+        
+        for (const line of lines) {
+          if (line.trim() === '') continue // End of an event
+          
+          if (line.startsWith('event:')) {
+            currentEvent = line.slice(6).trim()
+          } else if (line.startsWith('data:')) {
+            const dataStr = line.slice(5).trim()
+            try {
+              const dataObj = JSON.parse(dataStr)
+              
+              // We must wrap the python payload back into the GatewayEnvelope format Next.js expects
+              const mappedEnvelope: GatewayEnvelope = {
+                 event: currentEvent as any,
+                 version: '2.0',
+                 conversationId: conversationId,
+                 payload: dataObj,
+                 runId: undefined
+              }
+              
+              listeners.forEach(cb => cb(mappedEnvelope))
+            } catch (err) {
+              log(`❌ Failed to parse SSE chunks: ${err}`)
+            }
+          }
+        }
+      }
+    } catch (e: any) {
+      if (e.name !== 'AbortError') {
+        log(`❌ Stream Error: ${e}`)
+        throw e
+      } else {
+        log('🛑 Stream explicitly aborted.')
+      }
+    }
   },
 
   disconnect() {
-    if (socket) {
-      socket.close()
-      socket = null
-    }
+    // No-op for HTTP
   }
 }

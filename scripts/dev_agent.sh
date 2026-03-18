@@ -11,7 +11,20 @@ if [ "${INIT_DB:-false}" = "true" ]; then
     bash scripts/setup_local_db.sh
 fi
 
-echo "🤖 Starting Agent Bridge..."
-# uvicorn needs --env-file if it doesn't auto-load, but standard python-dotenv might be used in app.
-# User instruction explicitly says: "--env-file .env"
-cd services/agent-bridge && .venv/bin/python3 -m uvicorn agent_bridge.app:app --reload --env-file .env
+echo "🤖 Starting Agent Bridge (API & Worker)..."
+
+cd services/agent-bridge
+
+# Start worker in background
+.venv/bin/arq agent_bridge.worker.WorkerSettings &
+WORKER_PID=$!
+
+# Start API server in foreground
+.venv/bin/python3 -m uvicorn agent_bridge.app:app --reload --env-file .env --port 8050 &
+API_PID=$!
+
+# Cleanup on exit
+trap "kill -9 $WORKER_PID $API_PID 2>/dev/null" EXIT
+
+# Wait for all background processes
+wait

@@ -10,6 +10,7 @@ interface WorkflowState {
 
 export const useWorkflowStore = createWithEqualityFn<WorkflowState>((set) => ({
   options: [
+    { id: '11111111-2222-3333-4444-555555555555', name: '文稿生成工作流', enabled: true },
     { id: 'w1', name: '危机公关工作流（占位）', enabled: true },
     { id: 'w2', name: '创意策划工作流（占位）', enabled: true },
   ],

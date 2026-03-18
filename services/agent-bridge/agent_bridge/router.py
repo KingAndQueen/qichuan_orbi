@@ -25,6 +25,7 @@ router = APIRouter(prefix="/v1/agent")
 ProviderRegistry: Dict[str, Type[BaseProvider]] = {
     "system_native": SystemProvider,
     "coze": CozeProvider,
+    "coze_api": CozeProvider,
 }
 
 
